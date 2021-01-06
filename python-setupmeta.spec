@@ -13,6 +13,7 @@ BuildArch:      noarch
 
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(setuptools)
+BuildRequires:  python3dist(pytest)
 
 %description
 Simplify your setup.py :alt: Python versions tested (link to github project)
