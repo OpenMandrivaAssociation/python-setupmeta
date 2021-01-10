@@ -14,9 +14,10 @@ BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(setuptools)
 BuildRequires:  python3dist(pytest)
+BuildRequires:  python3dist(mock)
 
 %description
-Simplify your setup.py :alt: Python versions tested (link to github project)
+Simplify your setup.py 
 
 %prep
 %autosetup -n %{pypi_name}-%{version}
