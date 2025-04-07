@@ -1,40 +1,68 @@
-# Created by pyp2rpm-3.3.5
-%global pypi_name setupmeta
+%define module setupmeta
+%bcond_without test
 
-Name:           python-%{pypi_name}
-Version:        2.8.2
-Release:        2
-Summary:        Simplify your setup.py
-Group:          Development/Python
-License:        MIT
-URL:            https://github.com/zsimic/setupmeta
-Source0:        %{pypi_name}-%{version}.tar.gz
-BuildArch:      noarch
+Name:		python-setupmeta
+Version:	3.8.0
+Release:	1
+Summary:	Simplify your setup.py
+Group:		Development/Python
+License:	MIT
+URL:		https://github.com/codrsquad/setupmeta
+Source0:	https://files.pythonhosted.org/packages/source/s/setupmeta/%{module}-%{version}.tar.gz
 
-BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(mock)
+BuildSystem:	python
+BuildArch:		noarch
+
+BuildRequires:	git-core
+BuildRequires:	python
+BuildRequires:	pkgconfig(python3)
+BuildRequires:	python%{pyver}dist(setuptools)
+BuildRequires:	python%{pyver}dist(setuptools-scm)
+BuildRequires:	python%{pyver}dist(hatchling)
+BuildRequires:	python%{pyver}dist(pdm-backend)
+BuildRequires:	python%{pyver}dist(pip)
+BuildRequires:	python%{pyver}dist(wheel)
+%if %{with test}
+BuildRequires:	python%{pyver}dist(mock)
+BuildRequires:	python%{pyver}dist(packaging)
+BuildRequires:	python%{pyver}dist(pdm-backend)
+BuildRequires:	python%{pyver}dist(pytest)
+BuildRequires:	python%{pyver}dist(pytest-mock)
+BuildRequires:	python%{pyver}dist(setuptools)
+BuildRequires:	python%{pyver}dist(setuptools-scm)
+%endif
+
 
 %description
-Simplify your setup.py 
+Writing a setup.py typically involves lots of boilerplate and copy-pasting
+from project to project.
+
+This package aims to simplify that and bring some DRY principle to python
+packaging.
 
 %prep
-%autosetup -n %{pypi_name}-%{version}
+%autosetup -n %{module}-%{version} -p1
 # Remove bundled egg-info
-rm -rf %{pypi_name}.egg-info
+rm -rf %%{module}.egg-info
 
 %build
-%py3_build
+%py_build
 
 %install
 %py3_install
 
+%if %{with test}
 %check
-%{__python3} setup.py test
+# required for some tests
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+# test_check_dependencies: requires a virtualenv
+# test_version and test_scenario require full git project with its versioning scheme, disabled
+pytest -v tests/ -k "not test_check_dependencies and not test_version and not test_scenario"
+%endif
 
-%files -n python-%{pypi_name}
-%license LICENSE examples/direct/LICENSE.txt examples/hierarchical/LICENSE.txt setupmeta/license.py "tests/scenarios/So complex/LICENSE.md" tests/scenarios/readmes/LICENSE tests/test_license.py
-%doc README.rst examples/README.rst examples/direct/README.rst examples/direct/other/README.md examples/direct/tests/README.md examples/hierarchical/README.rst examples/single/README.rst examples/via-cfg/README.md tests/scenarios/README.rst tests/scenarios/bogus/README.md tests/scenarios/complex-reqs/README.md tests/scenarios/disabled/README.md tests/scenarios/packaged/README.md tests/scenarios/readmes/README.md tests/scenarios/readmes/README.rst tests/scenarios/readmes/README1 tests/scenarios/via_req_files/README.md
-%{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
+%files
+%{python3_sitelib}/%{module}
+%{python3_sitelib}/%{module}-*.dist-info
+%license LICENSE
+%doc README.rst
