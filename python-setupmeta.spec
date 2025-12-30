@@ -3,7 +3,7 @@
 
 Name:		python-setupmeta
 Version:	3.8.0
-Release:	1
+Release:	2
 Summary:	Simplify your setup.py
 Group:		Development/Python
 License:	MIT
