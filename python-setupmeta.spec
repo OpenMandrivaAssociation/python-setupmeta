@@ -3,7 +3,7 @@
 
 Name:		python-setupmeta
 Version:	3.9.0
-Release:	1
+Release:	2
 Summary:	Simplify your setup.py
 Group:		Development/Python
 License:	MIT
@@ -14,7 +14,7 @@ BuildSystem:	python
 BuildArch:		noarch
 BuildRequires:	git-core
 BuildRequires:	python
-BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python3)
 BuildRequires:	python%{pyver}dist(hatchling)
 BuildRequires:	python%{pyver}dist(pdm-backend)
 BuildRequires:	python%{pyver}dist(pip)
